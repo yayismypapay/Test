@@ -56,8 +56,8 @@
       'add.sub': 'Upload an MP3 from your device. Title and artist are required.',
       'add.drop_title': 'Drop your MP3 here',
       'add.drop_sub': 'or click to choose a file',
-      'add.field_title': 'Title *',
-      'add.field_artist': 'Artist *',
+      'add.field_title': 'Title',
+      'add.field_artist': 'Artist',
       'add.field_album': 'Album',
       'add.field_cover': 'Cover art',
       'add.ph_title': 'Track title',
@@ -146,8 +146,8 @@
       'add.sub': 'Загрузите MP3 со своего устройства. Название и исполнитель обязательны.',
       'add.drop_title': 'Перетащите MP3 сюда',
       'add.drop_sub': 'или нажмите, чтобы выбрать файл',
-      'add.field_title': 'Название *',
-      'add.field_artist': 'Исполнитель *',
+      'add.field_title': 'Название',
+      'add.field_artist': 'Исполнитель',
       'add.field_album': 'Альбом',
       'add.field_cover': 'Обложка',
       'add.ph_title': 'Название трека',
@@ -688,6 +688,10 @@
     $('#dropFileName').hidden = true;
     $('#dropFileName').textContent = '';
     $('#coverPreview').style.backgroundImage = '';
+    const af = $('#audioFile'); if (af) af.value = '';
+    const cf = $('#coverFile'); if (cf) cf.value = '';
+    const submitBtn = $('#addSubmitBtn');
+    if (submitBtn) submitBtn.disabled = false;
   }
 
   function bindAddForm() {
@@ -695,17 +699,25 @@
     const fileInput = $('#audioFile');
     const coverInput = $('#coverFile');
 
-    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('click', e => {
+      // Avoid recursion: a click that originated inside the (hidden) file input
+      // bubbles back here after fileInput.click() — ignore it.
+      if (e.target === fileInput) return;
+      fileInput.click();
+    });
+    fileInput.addEventListener('click', e => e.stopPropagation());
     dropZone.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
     });
     dropZone.addEventListener('dragover', e => {
       e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy';
       dropZone.classList.add('dragover');
     });
     dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
     dropZone.addEventListener('drop', e => {
       e.preventDefault();
+      e.stopPropagation();
       dropZone.classList.remove('dragover');
       const file = e.dataTransfer.files?.[0];
       if (file) handleAudioFile(file);
@@ -713,12 +725,15 @@
     fileInput.addEventListener('change', () => {
       const file = fileInput.files?.[0];
       if (file) handleAudioFile(file);
+      // Reset so picking the same file again re-fires change
+      fileInput.value = '';
     });
 
     $('#coverPickBtn').addEventListener('click', () => coverInput.click());
     coverInput.addEventListener('change', () => {
       const file = coverInput.files?.[0];
       if (file) handleCoverFile(file);
+      coverInput.value = '';
     });
     $('#coverClearBtn').addEventListener('click', () => {
       pendingCoverDataUri = null;
@@ -738,7 +753,9 @@
   }
 
   function handleAudioFile(file) {
-    if (!file.type.startsWith('audio/') && !/\.mp3$/i.test(file.name)) {
+    const looksLikeAudio = file.type.startsWith('audio/') ||
+      /\.(mp3|m4a|ogg|oga|wav|flac|aac|opus|webm)$/i.test(file.name);
+    if (!looksLikeAudio) {
       toast(t('add.error_not_audio'), 'error');
       return;
     }
@@ -748,6 +765,7 @@
       return;
     }
     pendingFile = file;
+    detectedDuration = 0;
     $('#dropFileName').hidden = false;
     $('#dropFileName').textContent = `${file.name} · ${(file.size / 1024 / 1024).toFixed(1)} MB`;
 
@@ -755,12 +773,13 @@
     const tmp = document.createElement('audio');
     tmp.preload = 'metadata';
     const url = URL.createObjectURL(file);
+    const cleanup = () => { try { URL.revokeObjectURL(url); } catch {} };
     tmp.src = url;
     tmp.addEventListener('loadedmetadata', () => {
       detectedDuration = isFinite(tmp.duration) ? tmp.duration : 0;
-      URL.revokeObjectURL(url);
+      cleanup();
     });
-    tmp.addEventListener('error', () => URL.revokeObjectURL(url));
+    tmp.addEventListener('error', cleanup);
 
     if (!$('#fldTitle').value) {
       $('#fldTitle').value = file.name.replace(/\.[^.]+$/, '').replace(/[_\-]+/g, ' ').trim();
@@ -787,9 +806,17 @@
 
     const submitBtn = $('#addSubmitBtn');
     submitBtn.disabled = true;
+    const id = 'tr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
     try {
-      const id = 'tr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
       await dbPut(id, pendingFile);
+    } catch (err) {
+      console.error('IDB put failed', err);
+      const quota = err && (err.name === 'QuotaExceededError' || /quota/i.test(err.message || ''));
+      toast(quota ? t('add.error_too_big') : t('add.error_save_failed'), 'error');
+      submitBtn.disabled = false;
+      return;
+    }
+    try {
       const track = {
         id,
         title,
@@ -800,12 +827,15 @@
         addedAt: Date.now(),
       };
       state.tracks.push(track);
+      addToRecent(id);
       saveState();
       toast(t('add.toast_added'), 'success');
       prepareAddForm();
       navigate('library');
     } catch (err) {
       console.error(err);
+      // Roll back the blob we just stored to avoid orphans
+      try { await dbDelete(id); } catch {}
       toast(t('add.error_save_failed'), 'error');
     } finally {
       submitBtn.disabled = false;
@@ -1294,6 +1324,15 @@
       console.warn('IDB reconcile failed', e);
     }
   }
+
+  // Prevent the browser from navigating away when a file is dropped
+  // outside the drop zone (e.g. on the player or sidebar).
+  ['dragover', 'drop'].forEach(evt => {
+    window.addEventListener(evt, e => {
+      if (e.target.closest('#dropZone')) return;
+      e.preventDefault();
+    });
+  });
 
   // ===== Init =====
   async function init() {
