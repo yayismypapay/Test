@@ -1290,9 +1290,12 @@
     if (historyIdx < navHistory.length - 1) { historyIdx++; suppressHistory = true; navigate(navHistory[historyIdx]); }
   });
 
-  // Sidebar & mobile-nav clicks
+  // Sidebar & mobile-nav clicks.
+  // Scope to button/link triggers only — the <section> view containers also
+  // carry data-view, and matching them would re-navigate (and reset forms)
+  // on every click inside a view.
   document.addEventListener('click', e => {
-    const navBtn = e.target.closest('[data-view]');
+    const navBtn = e.target.closest('button[data-view], a[data-view]');
     if (navBtn) {
       const v = navBtn.dataset.view;
       if (v && views.includes(v)) navigate(v);
