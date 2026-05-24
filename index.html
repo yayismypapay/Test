@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#000000" />
-<title>Sonora — Music for everyone</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0e16" />
+<title>Musify — Your sound, your way</title>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="style.css" />
 </head>
@@ -14,42 +14,57 @@
   <aside class="sidebar" aria-label="Primary">
     <div class="brand">
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-        <circle cx="16" cy="16" r="15" fill="#1ed760"/>
-        <path d="M9 12c4-2 10-2 14 0" stroke="#000" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-        <path d="M10 16c3.5-1.6 8.5-1.6 12 0" stroke="#000" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <path d="M11 20c3-1.2 7-1.2 10 0" stroke="#000" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+        <defs>
+          <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3ea8ff"/>
+            <stop offset="100%" stop-color="#0a6cff"/>
+          </linearGradient>
+        </defs>
+        <rect width="32" height="32" rx="9" fill="url(#brandGrad)"/>
+        <rect x="8"  y="15" width="2.6" height="6"  rx="1.3" fill="#fff"/>
+        <rect x="12" y="11" width="2.6" height="14" rx="1.3" fill="#fff"/>
+        <rect x="16" y="13" width="2.6" height="10" rx="1.3" fill="#fff"/>
+        <rect x="20" y="9"  width="2.6" height="18" rx="1.3" fill="#fff"/>
       </svg>
-      <span class="brand-name">Sonora</span>
+      <span class="brand-name">Musify</span>
     </div>
 
     <nav class="nav" aria-label="Main navigation">
       <button class="nav-item active" data-view="home">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 3 10v11h6v-7h6v7h6V10z"/></svg>
-        <span>Home</span>
+        <span data-i18n="nav.home">Home</span>
       </button>
       <button class="nav-item" data-view="search">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.95 12.05l4.25 4.25-1.41 1.41-4.25-4.25A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>
-        <span>Search</span>
+        <span data-i18n="nav.search">Search</span>
       </button>
       <button class="nav-item" data-view="library">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h2v18H4zM8 3h2v18H8zM14 3l6 1.5L17 22l-6-1.5z"/></svg>
-        <span>Library</span>
+        <span data-i18n="nav.library">Library</span>
+      </button>
+      <button class="nav-item" data-view="add">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 0 1 1-1z"/></svg>
+        <span data-i18n="nav.add">Add music</span>
       </button>
     </nav>
 
     <div class="sidebar-section">
       <div class="sidebar-section-head">
-        <span>Playlists</span>
+        <span data-i18n="sidebar.your_library">Your library</span>
       </div>
-      <div class="sidebar-playlists" id="sidebarPlaylists"></div>
-    </div>
 
-    <button class="nav-item liked-shortcut" data-view="liked">
-      <span class="liked-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.3-9.1C1 7.9 4 4 7.6 4c2.1 0 3.4 1.1 4.4 2.5C13 5.1 14.3 4 16.4 4 20 4 23 7.9 21.3 11.9 19 16.5 12 21 12 21z"/></svg>
-      </span>
-      <span>Liked Songs</span>
-    </button>
+      <button class="nav-item liked-shortcut" data-view="liked">
+        <span class="liked-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.3-9.1C1 7.9 4 4 7.6 4c2.1 0 3.4 1.1 4.4 2.5C13 5.1 14.3 4 16.4 4 20 4 23 7.9 21.3 11.9 19 16.5 12 21 12 21z"/></svg>
+        </span>
+        <span data-i18n="nav.liked">Liked Songs</span>
+      </button>
+
+      <button class="nav-item" data-view="settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.5-2-3.4-2.3.9a7.5 7.5 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.5 7.5 0 0 0-1.7 1L6.6 6 4.6 9.5 6.6 11a7.5 7.5 0 0 0 0 2l-2 1.5 2 3.4 2.3-.9a7.5 7.5 0 0 0 1.7 1L11 20.5h4l.4-2.5a7.5 7.5 0 0 0 1.7-1l2.3.9 2-3.4-2-1.5zM13 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+        <span data-i18n="nav.settings">Settings</span>
+      </button>
+    </div>
   </aside>
 
   <main class="main">
@@ -65,83 +80,121 @@
     </header>
 
     <div class="view-area" id="viewArea">
+
       <!-- HOME -->
       <section class="view" data-view="home">
         <div class="hero">
           <div class="hero-content">
-            <span class="eyebrow">Welcome back</span>
+            <span class="eyebrow" data-i18n="home.eyebrow">Welcome</span>
             <h1 id="greeting">Good evening</h1>
-            <p class="hero-sub">Fresh sounds, curated playlists and your favorites — all in one place.</p>
+            <p class="hero-sub" data-i18n="home.sub">Your personal music library — pure, private and built around the tracks you actually love.</p>
           </div>
           <div class="hero-glow"></div>
         </div>
 
-        <section class="row">
+        <section class="row" id="homeRecentRow" hidden>
           <div class="row-head">
-            <h2>Made for you</h2>
-            <button class="text-btn">Show all</button>
+            <h2 data-i18n="home.recently_added">Recently added</h2>
+            <button class="text-btn" data-view="library" data-i18n="common.show_all">Show all</button>
           </div>
-          <div class="card-grid" id="featuredGrid"></div>
+          <div class="card-grid" id="homeRecentGrid"></div>
         </section>
 
-        <section class="row">
+        <section class="row" id="homeShortcutsRow">
           <div class="row-head">
-            <h2>Recently played</h2>
-            <button class="text-btn">Show all</button>
+            <h2 data-i18n="home.shortcuts">Quick actions</h2>
           </div>
-          <div class="card-grid" id="recentGrid"></div>
+          <div class="shortcut-grid">
+            <button class="shortcut" data-view="add">
+              <span class="shortcut-icon icon-add">
+                <svg viewBox="0 0 24 24"><path d="M12 5a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 0 1 1-1z"/></svg>
+              </span>
+              <span class="shortcut-label" data-i18n="home.shortcut_add">Add music</span>
+            </button>
+            <button class="shortcut" data-view="library">
+              <span class="shortcut-icon icon-lib">
+                <svg viewBox="0 0 24 24"><path d="M4 3h2v18H4zM8 3h2v18H8zM14 3l6 1.5L17 22l-6-1.5z"/></svg>
+              </span>
+              <span class="shortcut-label" data-i18n="home.shortcut_library">Open library</span>
+            </button>
+            <button class="shortcut" data-view="liked">
+              <span class="shortcut-icon icon-liked">
+                <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.3-9.1C1 7.9 4 4 7.6 4c2.1 0 3.4 1.1 4.4 2.5C13 5.1 14.3 4 16.4 4 20 4 23 7.9 21.3 11.9 19 16.5 12 21 12 21z"/></svg>
+              </span>
+              <span class="shortcut-label" data-i18n="home.shortcut_liked">Liked songs</span>
+            </button>
+            <button class="shortcut" data-view="settings">
+              <span class="shortcut-icon icon-set">
+                <svg viewBox="0 0 24 24"><path d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.5-2-3.4-2.3.9a7.5 7.5 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.5 7.5 0 0 0-1.7 1L6.6 6 4.6 9.5 6.6 11a7.5 7.5 0 0 0 0 2l-2 1.5 2 3.4 2.3-.9a7.5 7.5 0 0 0 1.7 1L11 20.5h4l.4-2.5a7.5 7.5 0 0 0 1.7-1l2.3.9 2-3.4-2-1.5zM13 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+              </span>
+              <span class="shortcut-label" data-i18n="home.shortcut_settings">Settings</span>
+            </button>
+          </div>
         </section>
 
-        <section class="row">
-          <div class="row-head">
-            <h2>Recommended for today</h2>
-            <button class="text-btn">Show all</button>
+        <section class="empty-state" id="homeEmpty">
+          <div class="empty-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <path d="M22 14h26v32a8 8 0 1 1-6-7.7V20H28v22a8 8 0 1 1-6-7.7V14z" fill="currentColor"/>
+            </svg>
           </div>
-          <div class="card-grid" id="recsGrid"></div>
+          <h3 data-i18n="empty.home_title">Your library is empty</h3>
+          <p data-i18n="empty.home_sub">Add your first track to start building your collection.</p>
+          <button class="btn-primary" data-view="add" data-i18n="empty.cta_add">Add music</button>
         </section>
       </section>
 
       <!-- SEARCH -->
       <section class="view hidden" data-view="search">
         <div class="search-header">
-          <h1>Search</h1>
+          <h1 data-i18n="search.title">Search</h1>
           <div class="search-input">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.95 12.05l4.25 4.25-1.41 1.41-4.25-4.25A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>
-            <input id="searchInput" type="search" placeholder="Search tracks, artists, playlists" autocomplete="off" />
+            <input id="searchInput" type="search" data-i18n-placeholder="search.placeholder" placeholder="Search tracks, artists" autocomplete="off" />
           </div>
         </div>
         <div id="searchEmpty" class="search-empty">
-          <h2>Browse all</h2>
-          <div class="genre-grid" id="genreGrid"></div>
+          <p data-i18n="search.hint">Start typing to find tracks in your library.</p>
         </div>
         <div id="searchResults" class="search-results hidden">
           <section class="results-section" id="resTracksSection">
-            <h2>Tracks</h2>
+            <h2 data-i18n="search.tracks">Tracks</h2>
             <div class="track-list" id="resTracks"></div>
           </section>
-          <section class="results-section" id="resArtistsSection">
-            <h2>Artists</h2>
-            <div class="card-grid" id="resArtists"></div>
-          </section>
-          <section class="results-section" id="resPlaylistsSection">
-            <h2>Playlists</h2>
-            <div class="card-grid" id="resPlaylists"></div>
-          </section>
+        </div>
+        <div id="searchNoResults" class="empty-state hidden">
+          <h3 data-i18n="search.no_results">Nothing found</h3>
+          <p data-i18n="search.try_again">Try a different track name or artist.</p>
         </div>
       </section>
 
       <!-- LIBRARY -->
       <section class="view hidden" data-view="library">
         <div class="library-header">
-          <h1>Your library</h1>
-          <div class="chips" id="libraryChips">
-            <button class="chip active" data-filter="all">All</button>
-            <button class="chip" data-filter="playlists">Playlists</button>
-            <button class="chip" data-filter="liked">Liked</button>
-            <button class="chip" data-filter="recent">Recently added</button>
+          <h1 data-i18n="library.title">Your library</h1>
+          <div class="library-tools">
+            <div class="chips" id="libraryChips">
+              <button class="chip active" data-filter="all" data-i18n="library.all">All</button>
+              <button class="chip" data-filter="liked" data-i18n="library.liked">Liked</button>
+              <button class="chip" data-filter="recent" data-i18n="library.recent">Recently added</button>
+            </div>
+            <button class="btn-secondary" data-view="add">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 0 1 1-1z"/></svg>
+              <span data-i18n="library.add">Add music</span>
+            </button>
           </div>
         </div>
-        <div class="card-grid" id="libraryGrid"></div>
+        <div id="libraryListWrap">
+          <div class="track-list-head">
+            <span>#</span><span data-i18n="track.title">Title</span><span class="hide-sm" data-i18n="track.album">Album</span><span class="duration-col" data-i18n="track.duration">Duration</span>
+          </div>
+          <div class="track-list" id="libraryList"></div>
+        </div>
+        <div class="empty-state hidden" id="libraryEmpty">
+          <h3 data-i18n="empty.library_title">No tracks yet</h3>
+          <p data-i18n="empty.library_sub">Upload your first MP3 to get started.</p>
+          <button class="btn-primary" data-view="add" data-i18n="empty.cta_add">Add music</button>
+        </div>
       </section>
 
       <!-- LIKED -->
@@ -151,10 +204,10 @@
             <svg viewBox="0 0 64 64"><path d="M32 56s-19-12-19-26C13 22 19 16 26 16c3 0 5 1 6 3 1-2 3-3 6-3 7 0 13 6 13 14 0 14-19 26-19 26z" fill="#fff"/></svg>
           </div>
           <div class="playlist-info">
-            <span class="kind">Playlist</span>
-            <h1>Liked Songs</h1>
-            <p class="desc">Every track you've ever loved, in one place.</p>
-            <div class="meta"><span>You</span><span class="dot">·</span><span id="likedCount">0 tracks</span></div>
+            <span class="kind" data-i18n="liked.kind">Collection</span>
+            <h1 data-i18n="liked.title">Liked Songs</h1>
+            <p class="desc" data-i18n="liked.desc">Every track you've marked as favorite.</p>
+            <div class="meta"><span id="likedCount">0 tracks</span></div>
           </div>
         </header>
         <div class="playlist-actions">
@@ -163,33 +216,130 @@
           </button>
         </div>
         <div class="track-list-head">
-          <span>#</span><span>Title</span><span class="hide-sm">Album</span><span class="duration-col">Duration</span>
+          <span>#</span><span data-i18n="track.title">Title</span><span class="hide-sm" data-i18n="track.album">Album</span><span class="duration-col" data-i18n="track.duration">Duration</span>
         </div>
         <div class="track-list" id="likedTracks"></div>
+        <div class="empty-state hidden" id="likedEmpty">
+          <h3 data-i18n="empty.liked_title">No liked songs yet</h3>
+          <p data-i18n="empty.liked_sub">Tap the heart on any track to add it here.</p>
+        </div>
       </section>
 
-      <!-- PLAYLIST -->
-      <section class="view hidden" data-view="playlist">
-        <header class="playlist-header" id="playlistHeader">
-          <div class="playlist-cover" id="playlistCover"></div>
-          <div class="playlist-info">
-            <span class="kind">Playlist</span>
-            <h1 id="playlistTitle"></h1>
-            <p class="desc" id="playlistDesc"></p>
-            <div class="meta">
-              <span id="playlistOwner"></span><span class="dot">·</span><span id="playlistStats"></span>
+      <!-- ADD MUSIC -->
+      <section class="view hidden" data-view="add">
+        <div class="page-head">
+          <h1 data-i18n="add.title">Add music</h1>
+          <p class="page-sub" data-i18n="add.sub">Upload an MP3 from your device. Title and artist are required.</p>
+        </div>
+
+        <form class="add-form" id="addForm" autocomplete="off">
+          <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Choose MP3 file">
+            <input type="file" id="audioFile" accept="audio/mpeg,audio/mp3,audio/*" hidden />
+            <div class="drop-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3a1 1 0 0 1 1 1v9.6l2.3-2.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L11 13.6V4a1 1 0 0 1 1-1zM5 19h14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2z"/></svg>
+            </div>
+            <div class="drop-text">
+              <strong data-i18n="add.drop_title">Drop your MP3 here</strong>
+              <span data-i18n="add.drop_sub">or click to choose a file</span>
+            </div>
+            <div class="drop-file" id="dropFileName" hidden></div>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span class="field-label" data-i18n="add.field_title">Title <em>*</em></span>
+              <input type="text" id="fldTitle" required maxlength="120" data-i18n-placeholder="add.ph_title" placeholder="Track title" />
+            </label>
+            <label class="field">
+              <span class="field-label" data-i18n="add.field_artist">Artist <em>*</em></span>
+              <input type="text" id="fldArtist" required maxlength="120" data-i18n-placeholder="add.ph_artist" placeholder="Artist name" />
+            </label>
+            <label class="field">
+              <span class="field-label" data-i18n="add.field_album">Album</span>
+              <input type="text" id="fldAlbum" maxlength="120" data-i18n-placeholder="add.ph_album" placeholder="Album (optional)" />
+            </label>
+            <div class="field">
+              <span class="field-label" data-i18n="add.field_cover">Cover art</span>
+              <div class="cover-picker">
+                <div class="cover-preview" id="coverPreview"></div>
+                <div class="cover-actions">
+                  <input type="file" id="coverFile" accept="image/*" hidden />
+                  <button type="button" class="btn-secondary" id="coverPickBtn" data-i18n="add.choose_image">Choose image</button>
+                  <button type="button" class="btn-ghost" id="coverClearBtn" data-i18n="add.remove_image">Remove</button>
+                </div>
+              </div>
             </div>
           </div>
-        </header>
-        <div class="playlist-actions">
-          <button class="play-big" id="playPlaylistBtn" aria-label="Play playlist">
-            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          </button>
+
+          <div class="form-actions">
+            <button type="button" class="btn-ghost" id="addCancelBtn" data-i18n="common.cancel">Cancel</button>
+            <button type="submit" class="btn-primary" id="addSubmitBtn" data-i18n="add.save">Save track</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="view hidden" data-view="settings">
+        <div class="page-head">
+          <h1 data-i18n="settings.title">Settings</h1>
+          <p class="page-sub" data-i18n="settings.sub">Personalize Musify and manage your data.</p>
         </div>
-        <div class="track-list-head">
-          <span>#</span><span>Title</span><span class="hide-sm">Album</span><span class="duration-col">Duration</span>
-        </div>
-        <div class="track-list" id="playlistTracks"></div>
+
+        <section class="settings-block">
+          <header class="settings-row-head">
+            <h2 data-i18n="settings.language">Language</h2>
+            <p data-i18n="settings.language_sub">Choose the interface language.</p>
+          </header>
+          <div class="seg-control" id="langControl" role="tablist">
+            <button class="seg-option" data-lang="en" role="tab">English</button>
+            <button class="seg-option" data-lang="ru" role="tab">Русский</button>
+          </div>
+        </section>
+
+        <section class="settings-block">
+          <header class="settings-row-head">
+            <h2 data-i18n="settings.data">Data</h2>
+            <p data-i18n="settings.data_sub">Export a backup of your library, or restore one.</p>
+          </header>
+          <div class="settings-actions">
+            <button class="btn-secondary" id="exportBtn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a1 1 0 0 1 1 1v9.6l2.3-2.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L11 13.6V4a1 1 0 0 1 1-1zM5 19h14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2z" transform="rotate(180 12 12)"/></svg>
+              <span data-i18n="settings.export">Export library</span>
+            </button>
+            <button class="btn-secondary" id="importBtn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a1 1 0 0 1 1 1v9.6l2.3-2.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L11 13.6V4a1 1 0 0 1 1-1zM5 19h14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2z"/></svg>
+              <span data-i18n="settings.import">Import library</span>
+            </button>
+            <input type="file" id="importFile" accept="application/json,.json" hidden />
+            <button class="btn-danger" id="clearBtn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7zm3-4h6l1 2H8l1-2zM4 5h16v2H4z"/></svg>
+              <span data-i18n="settings.clear">Clear library</span>
+            </button>
+          </div>
+          <p class="settings-hint" id="exportStatus" hidden></p>
+        </section>
+
+        <section class="settings-block">
+          <header class="settings-row-head">
+            <h2 data-i18n="settings.about">About</h2>
+          </header>
+          <div class="about-card">
+            <div class="about-logo">
+              <svg viewBox="0 0 32 32" aria-hidden="true">
+                <defs><linearGradient id="aboutGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3ea8ff"/><stop offset="100%" stop-color="#0a6cff"/></linearGradient></defs>
+                <rect width="32" height="32" rx="9" fill="url(#aboutGrad)"/>
+                <rect x="8"  y="15" width="2.6" height="6"  rx="1.3" fill="#fff"/>
+                <rect x="12" y="11" width="2.6" height="14" rx="1.3" fill="#fff"/>
+                <rect x="16" y="13" width="2.6" height="10" rx="1.3" fill="#fff"/>
+                <rect x="20" y="9"  width="2.6" height="18" rx="1.3" fill="#fff"/>
+              </svg>
+            </div>
+            <div>
+              <div class="about-name">Musify</div>
+              <div class="about-desc" data-i18n="settings.about_desc">A local-first music library that lives entirely in your browser.</div>
+            </div>
+          </div>
+        </section>
       </section>
     </div>
   </main>
@@ -198,19 +348,23 @@
   <nav class="mobile-nav" aria-label="Mobile navigation">
     <button class="m-nav-item active" data-view="home">
       <svg viewBox="0 0 24 24"><path d="M12 3.2 3 10v11h6v-7h6v7h6V10z"/></svg>
-      <span>Home</span>
+      <span data-i18n="nav.home">Home</span>
     </button>
     <button class="m-nav-item" data-view="search">
       <svg viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 0 1 5.95 12.05l4.25 4.25-1.41 1.41-4.25-4.25A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>
-      <span>Search</span>
+      <span data-i18n="nav.search">Search</span>
     </button>
     <button class="m-nav-item" data-view="library">
       <svg viewBox="0 0 24 24"><path d="M4 3h2v18H4zM8 3h2v18H8zM14 3l6 1.5L17 22l-6-1.5z"/></svg>
-      <span>Library</span>
+      <span data-i18n="nav.library">Library</span>
     </button>
-    <button class="m-nav-item" data-view="liked">
-      <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.3-9.1C1 7.9 4 4 7.6 4c2.1 0 3.4 1.1 4.4 2.5C13 5.1 14.3 4 16.4 4 20 4 23 7.9 21.3 11.9 19 16.5 12 21 12 21z"/></svg>
-      <span>Liked</span>
+    <button class="m-nav-item" data-view="add">
+      <svg viewBox="0 0 24 24"><path d="M12 5a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 0 1 1-1z"/></svg>
+      <span data-i18n="nav.add">Add</span>
+    </button>
+    <button class="m-nav-item" data-view="settings">
+      <svg viewBox="0 0 24 24"><path d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.5-2-3.4-2.3.9a7.5 7.5 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.5 7.5 0 0 0-1.7 1L6.6 6 4.6 9.5 6.6 11a7.5 7.5 0 0 0 0 2l-2 1.5 2 3.4 2.3-.9a7.5 7.5 0 0 0 1.7 1L11 20.5h4l.4-2.5a7.5 7.5 0 0 0 1.7-1l2.3.9 2-3.4-2-1.5zM13 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+      <span data-i18n="nav.settings">Settings</span>
     </button>
   </nav>
 
@@ -219,7 +373,7 @@
     <div class="player-track">
       <div class="player-cover" id="playerCover"></div>
       <div class="player-meta">
-        <div class="player-title" id="playerTitle">Select a track</div>
+        <div class="player-title" id="playerTitle" data-i18n="player.empty_title">Nothing playing</div>
         <div class="player-artist" id="playerArtist">—</div>
       </div>
       <button class="like-btn" id="likeBtn" aria-label="Save to Liked Songs">
@@ -267,6 +421,19 @@
 
     <audio id="audio" preload="metadata"></audio>
   </footer>
+</div>
+
+<div class="toast-host" id="toastHost" aria-live="polite"></div>
+
+<div class="modal" id="confirmModal" hidden>
+  <div class="modal-card">
+    <h3 id="confirmTitle">Confirm</h3>
+    <p id="confirmBody"></p>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="confirmNo" data-i18n="common.cancel">Cancel</button>
+      <button class="btn-danger" id="confirmYes" data-i18n="common.confirm">Confirm</button>
+    </div>
+  </div>
 </div>
 
 <script src="script.js"></script>
