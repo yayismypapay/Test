@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2c3e50"/>
+      <stop offset="55%" stop-color="#fd746c"/>
+      <stop offset="100%" stop-color="#ff9966"/>
+    </linearGradient>
+  </defs>
+  <rect width="500" height="500" fill="url(#g)"/>
+  <path d="M0 360 Q 250 280 500 380 L 500 500 L 0 500 Z" fill="rgba(0,0,0,0.25)"/>
+  <circle cx="400" cy="140" r="80" fill="rgba(255,255,255,0.1)"/>
+  <text x="40" y="270" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="56" font-weight="800" fill="#ffffff" letter-spacing="-1">DUSK</text>
+  
+  <text x="40" y="460" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="14" font-weight="600" fill="rgba(255,255,255,0.7)" letter-spacing="2">SONORA · ORIGINAL</text>
+</svg>
